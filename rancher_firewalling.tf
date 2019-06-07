@@ -12,6 +12,14 @@ resource "exoscale_security_group_rules" "rancher_master_rules" {
   security_group_id = "${exoscale_security_group.rancher_master.id}"
 
   ingress {
+    description              = "ssh"
+    protocol                 = "TCP"
+    cidr_list                = ["0.0.0.0/32"]
+    ports                    = ["22"]
+    user_security_group_list = []
+  }
+
+  ingress {
     description              = "master-to-master communication over tcp"
     protocol                 = "TCP"
     cidr_list                = ["${formatlist("%s/32", list(hcloud_server.master-01.ipv4_address, hcloud_server.master-02.ipv4_address, hcloud_server.master-03.ipv4_address))}"]
@@ -46,6 +54,14 @@ resource "exoscale_security_group_rules" "rancher_master_rules" {
 
 resource "exoscale_security_group_rules" "rancher_worker_rules" {
   security_group_id = "${exoscale_security_group.rancher_worker.id}"
+
+  ingress {
+    description              = "ssh"
+    protocol                 = "TCP"
+    cidr_list                = ["0.0.0.0/32"]
+    ports                    = ["22"]
+    user_security_group_list = []
+  }
 
   ingress {
     description              = "worker-to-worker communication over tcp"
