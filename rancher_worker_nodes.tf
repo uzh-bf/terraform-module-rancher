@@ -67,7 +67,7 @@ resource "hcloud_server" "worker-hel" {
 # EXOSCALE @ DK
 resource "aws_route53_record" "worker-dk" {
   zone_id = "${var.aws_route53_zone}"
-  count   = "${var.hcloud_worker_count_dk}"
+  count   = "${var.exoscale_worker_count_dk}"
   name    = "${var.prefix}worker-dk-0${count.index + 1}.${var.base_domain}"
   type    = "A"
   ttl     = "300"
@@ -90,7 +90,7 @@ resource "exoscale_compute" "worker-dk" {
 # EXOSCALE @ GVA
 resource "aws_route53_record" "worker-gva" {
   zone_id = "${var.aws_route53_zone}"
-  count   = "${var.hcloud_worker_count_gva}"
+  count   = "${var.exoscale_worker_count_gva}"
   name    = "${var.prefix}worker-gva-0${count.index + 1}.${var.base_domain}"
   type    = "A"
   ttl     = "300"
