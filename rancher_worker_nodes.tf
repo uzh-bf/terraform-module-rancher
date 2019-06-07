@@ -79,7 +79,7 @@ resource "aws_route53_record" "worker-dk" {
 
 resource "exoscale_compute" "worker-dk" {
   count        = "${var.exoscale_worker_count_dk}"
-  display_name = "${var.prefix}worker-dk-0${count.index + 1}.${var.base_domain}"
+  display_name = "${var.prefix}worker-dk-0${count.index + 1}"
   template     = "${var.exoscale_base_image}"
   size         = "${var.exoscale_worker_size}"
   key_pair     = "${var.exoscale_ssh_key}"
@@ -102,7 +102,7 @@ resource "aws_route53_record" "worker-gva" {
 
 resource "exoscale_compute" "worker-gva" {
   count        = "${var.exoscale_worker_count_gva}"
-  display_name = "${var.prefix}worker-gva-0${count.index + 1}.${var.base_domain}"
+  display_name = "${var.prefix}worker-gva-0${count.index + 1}"
   template     = "${var.exoscale_base_image}"
   size         = "${var.exoscale_worker_size}"
   key_pair     = "${var.exoscale_ssh_key}"
