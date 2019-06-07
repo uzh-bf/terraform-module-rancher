@@ -73,7 +73,7 @@ resource "aws_route53_record" "worker-dk" {
   ttl     = "300"
 
   records = [
-    "${element(hcloud_server.worker-dk.*.ipv4_address, count.index)}",
+    "${element(exoscale_compute.worker-dk.*.ipv4_address, count.index)}",
   ]
 }
 
@@ -96,7 +96,7 @@ resource "aws_route53_record" "worker-gva" {
   ttl     = "300"
 
   records = [
-    "${element(hcloud_server.worker-gva.*.ipv4_address, count.index)}",
+    "${element(exoscale_compute.worker-gva.*.ipv4_address, count.index)}",
   ]
 }
 
