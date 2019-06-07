@@ -47,7 +47,7 @@ resource "exoscale_security_group_rules" "rancher_master_rules" {
   ingress {
     description              = "worker-to-master communication over tcp"
     protocol                 = "TCP"
-    cidr_list                = ["${hcloud_server.worker-fsn.*.ipv4_address}", "${hcloud_server.worker-nbg.*.ipv4_address}", "${hcloud_server.worker-hel.*.ipv4_address}"]
+    cidr_list                = "${concat(hcloud_server.worker-fsn.*.ipv4_address, hcloud_server.worker-nbg.*.ipv4_address, hcloud_server.worker-hel.*.ipv4_address)}"
     ports                    = ["2376", "6443", "9796", "30000-32767"]
     user_security_group_list = ["rancher-worker"]
   }
@@ -55,7 +55,7 @@ resource "exoscale_security_group_rules" "rancher_master_rules" {
   ingress {
     description              = "worker-to-master communication over udp"
     protocol                 = "UDP"
-    cidr_list                = ["${hcloud_server.worker-fsn.*.ipv4_address}", "${hcloud_server.worker-nbg.*.ipv4_address}", "${hcloud_server.worker-hel.*.ipv4_address}"]
+    cidr_list                = "${concat(hcloud_server.worker-fsn.*.ipv4_address, hcloud_server.worker-nbg.*.ipv4_address, hcloud_server.worker-hel.*.ipv4_address)}"
     ports                    = ["8472", "30000-32767"]
     user_security_group_list = ["rancher-worker"]
   }
@@ -67,7 +67,7 @@ resource "exoscale_security_group_rules" "rancher_worker_rules" {
   ingress {
     description              = "worker-to-worker communication over tcp"
     protocol                 = "TCP"
-    cidr_list                = ["${hcloud_server.worker-fsn.*.ipv4_address}", "${hcloud_server.worker-nbg.*.ipv4_address}", "${hcloud_server.worker-hel.*.ipv4_address}"]
+    cidr_list                = "${concat(hcloud_server.worker-fsn.*.ipv4_address, hcloud_server.worker-nbg.*.ipv4_address, hcloud_server.worker-hel.*.ipv4_address)}"
     ports                    = ["2376", "9796", "30000-32767"]
     user_security_group_list = ["rancher-worker"]
   }
@@ -75,7 +75,7 @@ resource "exoscale_security_group_rules" "rancher_worker_rules" {
   ingress {
     description              = "worker-to-worker communication over udp"
     protocol                 = "UDP"
-    cidr_list                = ["${hcloud_server.worker-fsn.*.ipv4_address}", "${hcloud_server.worker-nbg.*.ipv4_address}", "${hcloud_server.worker-hel.*.ipv4_address}"]
+    cidr_list                = "${concat(hcloud_server.worker-fsn.*.ipv4_address, hcloud_server.worker-nbg.*.ipv4_address, hcloud_server.worker-hel.*.ipv4_address)}"
     ports                    = ["8472", "30000-32767"]
     user_security_group_list = ["rancher-worker"]
   }
