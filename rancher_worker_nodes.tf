@@ -65,7 +65,18 @@ resource "hcloud_server" "worker-hel" {
 }
 
 # EXOSCALE @ DK
-# TODO: route53 for exo workers
+resource "aws_route53_record" "worker-dk" {
+  zone_id = "${var.aws_route53_zone}"
+  count   = "${var.hcloud_worker_count_dk}"
+  name    = "${var.prefix}worker-dk-0${count.index + 1}.${var.base_domain}"
+  type    = "A"
+  ttl     = "300"
+
+  records = [
+    "${element(hcloud_server.worker-dk.*.ipv4_address, count.index)}",
+  ]
+}
+
 resource "exoscale_compute" "worker-dk" {
   count        = "${var.exoscale_worker_count_dk}"
   display_name = "${var.prefix}worker-dk-0${count.index + 1}.${var.base_domain}"
@@ -77,7 +88,18 @@ resource "exoscale_compute" "worker-dk" {
 }
 
 # EXOSCALE @ GVA
-# TODO: route53 for exo workers
+resource "aws_route53_record" "worker-gva" {
+  zone_id = "${var.aws_route53_zone}"
+  count   = "${var.hcloud_worker_count_gva}"
+  name    = "${var.prefix}worker-gva-0${count.index + 1}.${var.base_domain}"
+  type    = "A"
+  ttl     = "300"
+
+  records = [
+    "${element(hcloud_server.worker-gva.*.ipv4_address, count.index)}",
+  ]
+}
+
 resource "exoscale_compute" "worker-gva" {
   count        = "${var.exoscale_worker_count_gva}"
   display_name = "${var.prefix}worker-gva-0${count.index + 1}.${var.base_domain}"
