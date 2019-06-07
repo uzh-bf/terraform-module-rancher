@@ -1,28 +1,11 @@
-resource "exoscale_security_group" "rancher_node" {
-  name        = "rancher-node"
-  description = "Security group that applies to all nodes in the Rancher cluster."
-
-  tags = {
-    kind = "rancher"
-  }
-}
-
 resource "exoscale_security_group" "rancher_master" {
   name        = "rancher-master"
   description = "Security group that applies to all master nodes in the Rancher cluster."
-
-  tags = {
-    kind = "rancher"
-  }
 }
 
 resource "exoscale_security_group" "rancher_worker" {
   name        = "rancher-worker"
   description = "Security group that applies to all worker nodes in the Rancher cluster."
-
-  tags = {
-    kind = "rancher"
-  }
 }
 
 resource "exoscale_security_group_rules" "rancher_master_rules" {
