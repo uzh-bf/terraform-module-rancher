@@ -14,7 +14,7 @@ resource "exoscale_security_group_rules" "rancher_master_rules" {
   ingress {
     description              = "ssh"
     protocol                 = "TCP"
-    cidr_list                = ["0.0.0.0/32"]
+    cidr_list                = ["0.0.0.0/0"]
     ports                    = ["22"]
     user_security_group_list = []
   }
@@ -58,7 +58,7 @@ resource "exoscale_security_group_rules" "rancher_worker_rules" {
   ingress {
     description              = "ssh"
     protocol                 = "TCP"
-    cidr_list                = ["0.0.0.0/32"]
+    cidr_list                = ["0.0.0.0/0"]
     ports                    = ["22"]
     user_security_group_list = []
   }
