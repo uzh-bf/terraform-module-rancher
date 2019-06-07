@@ -14,7 +14,7 @@ resource "exoscale_security_group_rules" "rancher_master_rules" {
   ingress {
     description              = "master-to-master communication over tcp"
     protocol                 = "TCP"
-    cidr_list                = ["${hcloud_server.master-01.ipv4_address}", "${hcloud_server.master-02.ipv4_address}", "${hcloud_server.master-03.ipv4_address}"]
+    cidr_list                = ["${formatlist("%s/32", list(hcloud_server.master-01.ipv4_address, hcloud_server.master-02.ipv4_address, hcloud_server.master-03.ipv4_address))}"]
     ports                    = ["2376", "2379", "2380", "6443", "9796", "10250", "30000-32767"]
     user_security_group_list = ["rancher-master"]
   }
@@ -22,7 +22,7 @@ resource "exoscale_security_group_rules" "rancher_master_rules" {
   ingress {
     description              = "master-to-master communication over udp"
     protocol                 = "UDP"
-    cidr_list                = ["${hcloud_server.master-01.ipv4_address}", "${hcloud_server.master-02.ipv4_address}", "${hcloud_server.master-03.ipv4_address}"]
+    cidr_list                = ["${formatlist("%s/32", list(hcloud_server.master-01.ipv4_address, hcloud_server.master-02.ipv4_address, hcloud_server.master-03.ipv4_address))}"]
     ports                    = ["8472", "30000-32767"]
     user_security_group_list = ["rancher-master"]
   }
@@ -66,7 +66,7 @@ resource "exoscale_security_group_rules" "rancher_worker_rules" {
   ingress {
     description              = "master-to-worker communication over tcp"
     protocol                 = "TCP"
-    cidr_list                = ["${hcloud_server.master-01.ipv4_address}", "${hcloud_server.master-02.ipv4_address}", "${hcloud_server.master-03.ipv4_address}"]
+    cidr_list                = ["${formatlist("%s/32", list(hcloud_server.master-01.ipv4_address, hcloud_server.master-02.ipv4_address, hcloud_server.master-03.ipv4_address))}"]
     ports                    = ["2376", "9796", "10250", "30000-32767"]
     user_security_group_list = ["rancher-master"]
   }
@@ -74,7 +74,7 @@ resource "exoscale_security_group_rules" "rancher_worker_rules" {
   ingress {
     description              = "master-to-worker communication over udp"
     protocol                 = "UDP"
-    cidr_list                = ["${hcloud_server.master-01.ipv4_address}", "${hcloud_server.master-02.ipv4_address}", "${hcloud_server.master-03.ipv4_address}"]
+    cidr_list                = ["${formatlist("%s/32", list(hcloud_server.master-01.ipv4_address, hcloud_server.master-02.ipv4_address, hcloud_server.master-03.ipv4_address))}"]
     ports                    = ["8472", "30000-32767"]
     user_security_group_list = ["rancher-master"]
   }
