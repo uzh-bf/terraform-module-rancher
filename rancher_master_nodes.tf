@@ -1,3 +1,16 @@
+resource "aws_route53_record" "master-nodes" {
+  zone_id = "${var.aws_route53_zone}"
+  name    = "_http._tcp.${var.prefix}master-nodes.${var.base_domain}"
+  type    = "SRV"
+  ttl     = "300"
+
+  records = [
+    "${hcloud_server.master-01.ipv4_address}",
+    "${hcloud_server.master-02.ipv4_address}",
+    "${hcloud_server.master-03.ipv4_address}",
+  ]
+}
+
 # MASTER 1
 resource "aws_route53_record" "master-01" {
   zone_id = "${var.aws_route53_zone}"

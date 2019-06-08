@@ -1,3 +1,12 @@
+resource "aws_route53_record" "worker-nodes" {
+  zone_id = "${var.aws_route53_zone}"
+  name    = "_http._tcp.${var.prefix}worker-nodes.${var.base_domain}"
+  type    = "SRV"
+  ttl     = "300"
+
+  records = ["${concat(hcloud_server.worker-fsn.*.ipv4_address, hcloud_server.worker-nbg.*.ipv4_address, hcloud_server.worker-hel.*.ipv4_address, exoscale_compute.worker-dk.*.ip_address, exoscale_compute.worker-gva.*.ip_address)}"]
+}
+
 # HETZNER CLOUD @ FSN
 resource "aws_route53_record" "worker-fsn" {
   zone_id = "${var.aws_route53_zone}"
