@@ -1,5 +1,9 @@
-output "aws_route53_record_lb_name" {
-  value = "${aws_route53_record.lb_all.name}"
+output "aws_route53_record_lb_rancher" {
+  value = "${aws_route53_record.lb_rancher.name}"
+}
+
+output "aws_route53_record_lb_apps" {
+  value = "${aws_route53_record.lb_apps.name}"
 }
 
 output "aws_route53_record_lb_zone_id" {

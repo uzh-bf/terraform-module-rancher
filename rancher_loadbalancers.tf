@@ -1,6 +1,15 @@
-resource "aws_route53_record" "lb_all" {
+resource "aws_route53_record" "lb_rancher" {
   zone_id = "${var.aws_route53_zone}"
   name    = "${var.prefix}rancher.${var.base_domain}"
+  type    = "A"
+  ttl     = "300"
+
+  records = ["${hcloud_server.lb.*.ipv4_address}"]
+}
+
+resource "aws_route53_record" "lb_apps" {
+  zone_id = "${var.aws_route53_zone}"
+  name    = "${var.prefix}apps.${var.base_domain}"
   type    = "A"
   ttl     = "300"
 

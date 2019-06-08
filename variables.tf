@@ -18,6 +18,7 @@ variable "hcloud_worker_count_nbg" {}
 variable "hcloud_worker_count_hel" {}
 variable "hcloud_master_size" {}
 variable "hcloud_worker_size" {}
+variable "setup_exoscale" {}
 variable "exoscale_ssh_key" {}
 variable "exoscale_base_image" {}
 variable "exoscale_disk_size" {}
