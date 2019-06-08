@@ -4,11 +4,18 @@ resource "aws_route53_record" "worker-nodes" {
   type    = "SRV"
   ttl     = "300"
 
-  records = ["${formatlist("10 1 443 %s", concat(hcloud_server.worker-fsn.*.ipv4_address,
-                       hcloud_server.worker-nbg.*.ipv4_address,
-                       hcloud_server.worker-hel.*.ipv4_address,
-                       exoscale_compute.worker-dk.*.ip_address,
-                       exoscale_compute.worker-gva.*.ip_address))}"]
+  records = ["${concat(
+    formatlist("10 1 80 %s", concat(hcloud_server.worker-fsn.*.ipv4_address,
+                                    hcloud_server.worker-nbg.*.ipv4_address,
+                                    hcloud_server.worker-hel.*.ipv4_address,
+                                    exoscale_compute.worker-dk.*.ip_address,
+                                    exoscale_compute.worker-gva.*.ip_address)),
+    formatlist("10 1 443 %s", concat(hcloud_server.worker-fsn.*.ipv4_address,
+                                     hcloud_server.worker-nbg.*.ipv4_address,
+                                     hcloud_server.worker-hel.*.ipv4_address,
+                                     exoscale_compute.worker-dk.*.ip_address,
+                                     exoscale_compute.worker-gva.*.ip_address)),
+  )}"]
 }
 
 # HETZNER CLOUD @ FSN

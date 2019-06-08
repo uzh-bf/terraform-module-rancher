@@ -4,9 +4,14 @@ resource "aws_route53_record" "master-nodes" {
   type    = "SRV"
   ttl     = "300"
 
-  records = ["${formatlist("10 1 443 %s", list(hcloud_server.master-01.ipv4_address,
-                                               hcloud_server.master-02.ipv4_address,
-                                               hcloud_server.master-03.ipv4_address))}"]
+  records = ["${concat(
+    formatlist("10 1 80 %s", list(hcloud_server.master-01.ipv4_address,
+                                  hcloud_server.master-02.ipv4_address,
+                                  hcloud_server.master-03.ipv4_address)),
+    formatlist("10 1 443 %s", list(hcloud_server.master-01.ipv4_address,
+                                   hcloud_server.master-02.ipv4_address,
+                                   hcloud_server.master-03.ipv4_address))
+  )}"]
 }
 
 # MASTER 1
