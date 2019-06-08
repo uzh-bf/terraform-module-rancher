@@ -17,6 +17,7 @@ resource "aws_route53_record" "lb_apps" {
 }
 
 resource "aws_route53_record" "lb" {
+  count   = "${length(var.hcloud_lb_locations)}"
   zone_id = "${var.aws_route53_zone}"
   name    = "${var.prefix}lb-0${count.index + 1}.${var.base_domain}"
   type    = "A"
