@@ -1,9 +1,9 @@
 output "aws_route53_record_lb_name" {
-  value = "${aws_route53_record.lb.name}"
+  value = "${aws_route53_record.lb_all.name}"
 }
 
 output "aws_route53_record_lb_zone_id" {
-  value = "${aws_route53_record.lb.zone_id}"
+  value = "${aws_route53_record.lb_all.zone_id}"
 }
 
 output "cert_manager_access_key" {

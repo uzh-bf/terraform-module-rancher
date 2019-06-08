@@ -2,6 +2,12 @@ variable "prefix" {}
 variable "base_domain" {}
 variable "aws_route53_zone" {}
 
+variable "hcloud_lb_locations" {
+  default = ["fsn", "nbg"]
+}
+
+variable "hcloud_lb_size" {}
+
 variable "hcloud_ssh_keys" {
   default = []
 }
