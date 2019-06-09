@@ -43,8 +43,8 @@ resource "hcloud_server" "lb" {
   ssh_keys    = "${var.hcloud_ssh_keys}"
 }
 
-resource "hcloud_floating_ip" "lb_apps" {
-  count = "${length(hcloud_server.lb.*)}"
+resource "hcloud_floating_ip" "lb_worker" {
+  count = "${length(var.hcloud_lb_nodes)}"
 
   type      = "ipv4"
   server_id = "${element(hcloud_server.lb.*.id, count.index)}"
