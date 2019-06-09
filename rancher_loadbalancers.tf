@@ -21,7 +21,7 @@ resource "aws_route53_record" "lb_worker" {
 }
 
 resource "aws_route53_record" "lb" {
-  count = "${length(var.hcloud_lb_locations)}"
+  count = "${length(var.hcloud_lb_nodes)}"
 
   zone_id = "${var.aws_route53_zone}"
   name    = "${var.prefix}lb-0${count.index + 1}.${var.base_domain}"
@@ -34,11 +34,11 @@ resource "aws_route53_record" "lb" {
 }
 
 resource "hcloud_server" "lb" {
-  count = "${length(var.hcloud_lb_locations)}"
+  count = "${length(var.hcloud_lb_nodes)}"
 
   image       = "${var.hcloud_base_image}"
   name        = "${var.prefix}lb-0${count.index + 1}.${var.base_domain}"
-  location    = "${element(var.hcloud_lb_locations, count.index)}"
+  location    = "${element(var.hcloud_lb_nodes, count.index)}"
   server_type = "${var.hcloud_lb_size}"
   ssh_keys    = "${var.hcloud_ssh_keys}"
 }
