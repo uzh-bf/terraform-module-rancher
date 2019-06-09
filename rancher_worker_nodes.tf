@@ -1,14 +1,3 @@
-resource "aws_route53_record" "worker_nodes" {
-  zone_id = "${var.aws_route53_zone}"
-  name    = "${var.prefix}workers.${var.base_domain}"
-  type    = "A"
-  ttl     = "300"
-
-  records = [
-    "${concat(hcloud_server.worker.*.ipv4_address, exoscale_compute.worker.*.ip_address)}",
-  ]
-}
-
 resource "aws_route53_record" "hcloud_worker" {
   count = "${length(var.hcloud_worker_nodes)}"
 
@@ -57,6 +46,19 @@ resource "exoscale_compute" "worker" {
 
   security_groups = [
     "rancher-worker",
+  ]
+}
+
+resource "aws_route53_record" "worker_nodes" {
+  count = "${length(concat(var.hcloud_worker_nodes, var.exoscale_worker_nodes)) > 0 ? 1 : 0}"
+
+  zone_id = "${var.aws_route53_zone}"
+  name    = "${var.prefix}workers.${var.base_domain}"
+  type    = "A"
+  ttl     = "300"
+
+  records = [
+    "${concat(hcloud_server.worker.*.ipv4_address, exoscale_compute.worker.*.ip_address)}",
   ]
 }
 
