@@ -50,6 +50,8 @@ resource "exoscale_compute" "worker" {
 }
 
 resource "aws_route53_record" "worker_nodes" {
+  count = "${length(concat(hcloud_server.worker.*.ipv4_address, exoscale_compute.worker.*.ip_address)) ? 1 : 0}"
+
   zone_id = "${var.aws_route53_zone}"
   name    = "_http._tcp.${var.prefix}worker-nodes.${var.base_domain}"
   type    = "SRV"
