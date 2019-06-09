@@ -6,6 +6,10 @@ output "aws_route53_record_lb_worker" {
   value = "${aws_route53_record.lb_worker.name}"
 }
 
+output "aws_route53_record_worker_nodes" {
+  value = "${aws_route53_record.worker_nodes}"
+}
+
 output "cert_manager_access_key" {
   value = "${aws_iam_access_key.cert_manager_credentials.*.id}"
 }
