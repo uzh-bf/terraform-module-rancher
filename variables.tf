@@ -35,11 +35,11 @@ variable "hcloud_base_image" {
 }
 
 variable "hcloud_master_size" {
-  default = "CX21"
+  default = "cx21"
 }
 
 variable "hcloud_worker_size" {
-  default = "CX41"
+  default = "cx41"
 }
 
 variable "exoscale_ssh_key" {}
