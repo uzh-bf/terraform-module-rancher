@@ -7,13 +7,9 @@ output "aws_route53_record_lb_worker" {
 }
 
 output "cert_manager_access_key" {
-  count = "${var.setup_certmgr ? 1 : 0}"
-
-  value = "${aws_iam_access_key.cert_manager_credentials.id}"
+  value = "${aws_iam_access_key.cert_manager_credentials.*.id}"
 }
 
 output "cert_manager_secret_key" {
-  count = "${var.setup_certmgr ? 1 : 0}"
-
-  value = "${aws_iam_access_key.cert_manager_credentials.secret}"
+  value = "${aws_iam_access_key.cert_manager_credentials.*.secret}"
 }
