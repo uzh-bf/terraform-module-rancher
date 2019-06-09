@@ -16,7 +16,7 @@ resource "aws_route53_record" "lb_worker" {
   ttl     = "300"
 
   records = [
-    "${hcloud_server.lb.*.ipv4_address}",
+    "${hcloud_floating_ip.lb_worker.*.ip_address}",
   ]
 }
 
