@@ -2,26 +2,60 @@ variable "prefix" {}
 variable "base_domain" {}
 variable "aws_route53_zone" {}
 
-variable "hcloud_lb_locations" {
-  type = "list"
+variable "setup_certmgr" {
+  default = "0"
 }
 
-variable "hcloud_lb_size" {}
+variable "setup_exoscale" {
+  default = "0"
+}
+
+variable "hcloud_lb_nodes" {
+  default = []
+}
+
+variable "hcloud_master_nodes" {
+  default = ["fsn1", "nbg1", "hel1"]
+}
+
+variable "hcloud_worker_nodes" {
+  default = []
+}
+
+variable "hcloud_lb_size" {
+  default = "cx11"
+}
 
 variable "hcloud_ssh_keys" {
   type = "list"
 }
 
-variable "hcloud_base_image" {}
-variable "hcloud_worker_count_fsn" {}
-variable "hcloud_worker_count_nbg" {}
-variable "hcloud_worker_count_hel" {}
-variable "hcloud_master_size" {}
-variable "hcloud_worker_size" {}
-variable "setup_exoscale" {}
+variable "hcloud_base_image" {
+  default = "ubuntu-18.04"
+}
+
+variable "hcloud_master_size" {
+  default = "CX21"
+}
+
+variable "hcloud_worker_size" {
+  default = "CX41"
+}
+
 variable "exoscale_ssh_key" {}
-variable "exoscale_base_image" {}
-variable "exoscale_disk_size" {}
-variable "exoscale_worker_size" {}
-variable "exoscale_worker_count_dk" {}
-variable "exoscale_worker_count_gva" {}
+
+variable "exoscale_base_image" {
+  default = "Linux Ubuntu 18.04 LTS 64-bit"
+}
+
+variable "exoscale_disk_size" {
+  default = "20"
+}
+
+variable "exoscale_worker_size" {
+  default = "Small"
+}
+
+variable "exoscale_worker_nodes" {
+  default = []
+}

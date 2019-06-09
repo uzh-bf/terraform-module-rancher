@@ -1,133 +1,62 @@
-resource "aws_route53_record" "worker-nodes" {
+resource "aws_route53_record" "hcloud_worker" {
+  count = "${length(var.hcloud_worker_nodes)}"
+
+  zone_id = "${var.aws_route53_zone}"
+  name    = "${var.prefix}worker-0${count.index + 1}.${var.base_domain}"
+  type    = "A"
+  ttl     = "300"
+
+  records = [
+    "${element(hcloud_server.worker.*.ipv4_address, count.index)}",
+  ]
+}
+
+resource "hcloud_server" "worker" {
+  count = "${length(var.hcloud_worker_nodes)}"
+
+  image       = "${var.hcloud_base_image}"
+  name        = "${var.prefix}worker-0${count.index + 1}.${var.base_domain}"
+  location    = "${element(var.hcloud_worker_nodes, count.index)}"
+  server_type = "${var.hcloud_worker_size}"
+  ssh_keys    = "${var.hcloud_ssh_keys}"
+}
+
+resource "aws_route53_record" "exoscale_worker" {
+  count = "${length(var.exoscale_worker_nodes)}"
+
+  zone_id = "${var.aws_route53_zone}"
+  name    = "${var.prefix}worker-1${count.index + 1}.${var.base_domain}"
+  type    = "A"
+  ttl     = "300"
+
+  records = [
+    "${element(exoscale_compute.worker.*.ip_address, count.index)}",
+  ]
+}
+
+resource "exoscale_compute" "worker" {
+  count = "${length(var.exoscale_worker_nodes)}"
+
+  display_name = "${var.prefix}worker-1${count.index + 1}"
+  template     = "${var.exoscale_base_image}"
+  size         = "${var.exoscale_worker_size}"
+  key_pair     = "${var.exoscale_ssh_key}"
+  disk_size    = "${var.exoscale_disk_size}"
+  zone         = "${element(var.exoscale_worker_nodes, count.index)}" # ch-dk-2 or ch-gva-2
+
+  security_groups = [
+    "rancher-worker",
+  ]
+}
+
+resource "aws_route53_record" "worker_nodes" {
   zone_id = "${var.aws_route53_zone}"
   name    = "_http._tcp.${var.prefix}worker-nodes.${var.base_domain}"
   type    = "SRV"
   ttl     = "300"
 
   records = ["${concat(
-    formatlist("10 1 80 %s", concat(hcloud_server.worker-fsn.*.ipv4_address,
-                                    hcloud_server.worker-nbg.*.ipv4_address,
-                                    hcloud_server.worker-hel.*.ipv4_address,
-                                    exoscale_compute.worker-dk.*.ip_address,
-                                    exoscale_compute.worker-gva.*.ip_address)),
-    formatlist("10 1 443 %s", concat(hcloud_server.worker-fsn.*.ipv4_address,
-                                     hcloud_server.worker-nbg.*.ipv4_address,
-                                     hcloud_server.worker-hel.*.ipv4_address,
-                                     exoscale_compute.worker-dk.*.ip_address,
-                                     exoscale_compute.worker-gva.*.ip_address)),
+    formatlist("10 1 80 %s", concat(hcloud_server.worker.*.ipv4_address, exoscale_compute.worker.*.ip_address)),
+    formatlist("10 1 443 %s", concat(hcloud_server.worker.*.ipv4_address, exoscale_compute.worker.*.ip_address)),
   )}"]
-}
-
-# HETZNER CLOUD @ FSN
-resource "aws_route53_record" "worker-fsn" {
-  zone_id = "${var.aws_route53_zone}"
-  count   = "${var.hcloud_worker_count_fsn}"
-  name    = "${var.prefix}worker-fsn-0${count.index + 1}.${var.base_domain}"
-  type    = "A"
-  ttl     = "300"
-
-  records = [
-    "${element(hcloud_server.worker-fsn.*.ipv4_address, count.index)}",
-  ]
-}
-
-resource "hcloud_server" "worker-fsn" {
-  count       = "${var.hcloud_worker_count_fsn}"
-  image       = "${var.hcloud_base_image}"
-  name        = "${var.prefix}worker-fsn-0${count.index + 1}.${var.base_domain}"
-  location    = "fsn1"
-  server_type = "${var.hcloud_worker_size}"
-  ssh_keys    = "${var.hcloud_ssh_keys}"
-}
-
-# HETZNER CLOUD @ NBG
-resource "aws_route53_record" "worker-nbg" {
-  zone_id = "${var.aws_route53_zone}"
-  count   = "${var.hcloud_worker_count_nbg}"
-  name    = "${var.prefix}worker-nbg-0${count.index + 1}.${var.base_domain}"
-  type    = "A"
-  ttl     = "300"
-
-  records = [
-    "${element(hcloud_server.worker-nbg.*.ipv4_address, count.index)}",
-  ]
-}
-
-resource "hcloud_server" "worker-nbg" {
-  count       = "${var.hcloud_worker_count_nbg}"
-  image       = "${var.hcloud_base_image}"
-  name        = "${var.prefix}worker-nbg-0${count.index + 1}.${var.base_domain}"
-  location    = "nbg1"
-  server_type = "${var.hcloud_worker_size}"
-  ssh_keys    = "${var.hcloud_ssh_keys}"
-}
-
-# HETZNER CLOUD @ HEL
-resource "aws_route53_record" "worker-hel" {
-  zone_id = "${var.aws_route53_zone}"
-  count   = "${var.hcloud_worker_count_hel}"
-  name    = "${var.prefix}worker-hel-0${count.index + 1}.${var.base_domain}"
-  type    = "A"
-  ttl     = "300"
-
-  records = [
-    "${element(hcloud_server.worker-hel.*.ipv4_address, count.index)}",
-  ]
-}
-
-resource "hcloud_server" "worker-hel" {
-  count       = "${var.hcloud_worker_count_hel}"
-  image       = "${var.hcloud_base_image}"
-  name        = "${var.prefix}worker-hel-0${count.index + 1}.${var.base_domain}"
-  location    = "hel1"
-  server_type = "${var.hcloud_worker_size}"
-  ssh_keys    = "${var.hcloud_ssh_keys}"
-}
-
-# EXOSCALE @ DK
-resource "aws_route53_record" "worker-dk" {
-  zone_id = "${var.aws_route53_zone}"
-  count   = "${var.exoscale_worker_count_dk}"
-  name    = "${var.prefix}worker-dk-0${count.index + 1}.${var.base_domain}"
-  type    = "A"
-  ttl     = "300"
-
-  records = [
-    "${element(exoscale_compute.worker-dk.*.ip_address, count.index)}",
-  ]
-}
-
-resource "exoscale_compute" "worker-dk" {
-  count           = "${var.exoscale_worker_count_dk}"
-  display_name    = "${var.prefix}worker-dk-0${count.index + 1}"
-  template        = "${var.exoscale_base_image}"
-  size            = "${var.exoscale_worker_size}"
-  key_pair        = "${var.exoscale_ssh_key}"
-  disk_size       = "${var.exoscale_disk_size}"
-  zone            = "ch-dk-2"
-  security_groups = ["rancher-worker"]
-}
-
-# EXOSCALE @ GVA
-resource "aws_route53_record" "worker-gva" {
-  zone_id = "${var.aws_route53_zone}"
-  count   = "${var.exoscale_worker_count_gva}"
-  name    = "${var.prefix}worker-gva-0${count.index + 1}.${var.base_domain}"
-  type    = "A"
-  ttl     = "300"
-
-  records = [
-    "${element(exoscale_compute.worker-gva.*.ip_address, count.index)}",
-  ]
-}
-
-resource "exoscale_compute" "worker-gva" {
-  count           = "${var.exoscale_worker_count_gva}"
-  display_name    = "${var.prefix}worker-gva-0${count.index + 1}"
-  template        = "${var.exoscale_base_image}"
-  size            = "${var.exoscale_worker_size}"
-  key_pair        = "${var.exoscale_ssh_key}"
-  disk_size       = "${var.exoscale_disk_size}"
-  zone            = "ch-gva-2"
-  security_groups = ["rancher-worker"]
 }
