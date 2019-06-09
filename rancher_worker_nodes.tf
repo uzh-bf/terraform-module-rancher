@@ -60,7 +60,7 @@ resource "exoscale_compute" "worker" {
   ]
 }
 
-resource "aws_route53_record" "worker_nodes" {
+resource "aws_route53_record" "worker_nodes_srv" {
   count = "${length(concat(var.hcloud_worker_nodes, var.exoscale_worker_nodes)) > 0 ? 1 : 0}"
 
   zone_id = "${var.aws_route53_zone}"
