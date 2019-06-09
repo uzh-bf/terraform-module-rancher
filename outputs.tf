@@ -1,9 +1,9 @@
 output "aws_route53_record_lb_master" {
-  value = "${aws_route53_record.lb_master.name}"
+  value = "${aws_route53_record.lb_master.*.name}"
 }
 
 output "aws_route53_record_lb_worker" {
-  value = "${aws_route53_record.lb_worker.name}"
+  value = "${aws_route53_record.lb_worker.*.name}"
 }
 
 output "aws_route53_record_worker_nodes" {

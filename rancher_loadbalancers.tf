@@ -1,4 +1,6 @@
 resource "aws_route53_record" "lb_master" {
+  count = "${length(var.hcloud_lb_nodes) > 0 ? 1 : 0}"
+
   zone_id = "${var.aws_route53_zone}"
   name    = "${var.prefix}master.${var.base_domain}"
   type    = "A"
@@ -10,6 +12,8 @@ resource "aws_route53_record" "lb_master" {
 }
 
 resource "aws_route53_record" "lb_worker" {
+  count = "${length(var.hcloud_lb_nodes) > 0 ? 1 : 0}"
+
   zone_id = "${var.aws_route53_zone}"
   name    = "${var.prefix}worker.${var.base_domain}"
   type    = "A"
