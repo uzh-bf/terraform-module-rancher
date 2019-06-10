@@ -6,6 +6,10 @@ variable "setup_certmgr" {
   default = "0"
 }
 
+variable "certmgr_username" {
+  default = "cert-manager"
+}
+
 variable "setup_exoscale" {
   default = "0"
 }

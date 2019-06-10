@@ -1,7 +1,7 @@
 resource "aws_iam_user" "cert_manager" {
   count = "${var.setup_certmgr ? 1 : 0}"
 
-  name = "cert-manager"
+  name = "${var.certmgr_username}"
 }
 
 resource "aws_iam_access_key" "cert_manager_credentials" {
