@@ -2,6 +2,10 @@ variable "prefix" {}
 variable "base_domain" {}
 variable "aws_route53_zone" {}
 
+variable "etcd_bucket_prefix" {
+  default = ""
+}
+
 variable "setup_certmgr" {
   default = "0"
 }

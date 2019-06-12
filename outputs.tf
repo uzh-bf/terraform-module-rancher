@@ -17,3 +17,11 @@ output "cert_manager_access_key" {
 output "cert_manager_secret_key" {
   value = "${aws_iam_access_key.cert_manager_credentials.*.secret}"
 }
+
+output "etcd_access_key" {
+  value = "${aws_iam_access_key.etcd_credentials.*.id}"
+}
+
+output "etcd_secret_key" {
+  value = "${aws_iam_access_key.etcd_credentials.*.secret}"
+}
