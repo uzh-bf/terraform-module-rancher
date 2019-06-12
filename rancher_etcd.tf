@@ -1,12 +1,12 @@
-resource "aws_iam_user" "etcd" {
+resource "aws_iam_user" "etcd_user" {
   name = "etcd-backup-2019"
 }
 
 resource "aws_iam_access_key" "etcd_credentials" {
-  user = "${aws_iam_user.etcd.name}"
+  user = "${aws_iam_user.etcd_user.name}"
 }
 
-resource "aws_iam_policy" "cert_manager_policy" {
+resource "aws_iam_policy" "etcd_policy" {
   name        = "etcd_s3_access"
   description = "Allow etcd to access the backup buckets."
 
@@ -39,8 +39,8 @@ EOF
 
 resource "aws_iam_policy_attachment" "etcd_policy_attachment" {
   name       = "etcd_policy_attachment"
-  policy_arn = "${aws_iam_policy.etcd.arn}"
-  users      = ["${aws_iam_user.etcd.name}"]
+  policy_arn = "${aws_iam_policy.etcd_policy.arn}"
+  users      = ["${aws_iam_user.etcd_user.name}"]
 }
 
 resource "aws_s3_bucket" "rancher_etcd_bucket" {
