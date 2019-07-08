@@ -1,17 +1,17 @@
 resource "exoscale_security_group" "rancher_master" {
-  count       = "${var.setup_exoscale ? 1 : 0}"
+  count       = "${var.setup_exoscale > 0 ? 1 : 0}"
   name        = "rancher-master"
   description = "Security group that applies to all master nodes in the Rancher cluster."
 }
 
 resource "exoscale_security_group" "rancher_worker" {
-  count       = "${var.setup_exoscale ? 1 : 0}"
+  count       = "${var.setup_exoscale > 0 ? 1 : 0}"
   name        = "rancher-worker"
   description = "Security group that applies to all worker nodes in the Rancher cluster."
 }
 
 resource "exoscale_security_group_rules" "rancher_master_rules" {
-  count             = "${var.setup_exoscale ? 1 : 0}"
+  count             = "${var.setup_exoscale > 0 ? 1 : 0}"
   security_group_id = "${exoscale_security_group.rancher_master[0].id}"
 
   ingress {
@@ -56,7 +56,7 @@ resource "exoscale_security_group_rules" "rancher_master_rules" {
 }
 
 resource "exoscale_security_group_rules" "rancher_worker_rules" {
-  count             = "${var.setup_exoscale ? 1 : 0}"
+  count             = "${var.setup_exoscale > 0 ? 1 : 0}"
   security_group_id = "${exoscale_security_group.rancher_worker[0].id}"
 
   ingress {
