@@ -6,9 +6,7 @@ resource "aws_route53_record" "lb_master" {
   type    = "A"
   ttl     = "300"
 
-  records = [
-    "${hcloud_server.lb.*.ipv4_address}",
-  ]
+  records = "${hcloud_server.lb.*.ipv4_address}"
 }
 
 resource "aws_route53_record" "lb_worker" {
@@ -19,9 +17,7 @@ resource "aws_route53_record" "lb_worker" {
   type    = "A"
   ttl     = "300"
 
-  records = [
-    "${hcloud_floating_ip.lb_worker.*.ip_address}",
-  ]
+  records = "${hcloud_floating_ip.lb_worker.*.ip_address}"
 }
 
 resource "aws_route53_record" "lb" {
