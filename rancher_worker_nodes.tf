@@ -57,21 +57,20 @@ resource "aws_route53_record" "worker_nodes" {
   type    = "A"
   ttl     = "300"
 
-  records = [
-    "${concat(hcloud_server.worker.*.ipv4_address, exoscale_compute.worker.*.ip_address)}",
-  ]
+  records = "${concat(hcloud_server.worker.*.ipv4_address, exoscale_compute.worker.*.ip_address)}",
+
 }
 
-# resource "aws_route53_record" "worker_nodes_srv" {
-#   count = "${length(concat(var.hcloud_worker_nodes, var.exoscale_worker_nodes)) > 0 ? 1 : 0}"
+resource "aws_route53_record" "worker_nodes_srv" {
+  count = "${length(concat(var.hcloud_worker_nodes, var.exoscale_worker_nodes)) > 0 ? 1 : 0}"
 
-#   zone_id = "${var.aws_route53_zone}"
-#   name    = "_http._tcp.${var.prefix}worker-nodes.${var.base_domain}"
-#   type    = "SRV"
-#   ttl     = "300"
+  zone_id = "${var.aws_route53_zone}"
+  name    = "_http._tcp.${var.prefix}worker-nodes.${var.base_domain}"
+  type    = "SRV"
+  ttl     = "300"
 
-#   records = "${concat(
-#     formatlist("10 1 80 %s", concat(hcloud_server.worker.*.ipv4_address, exoscale_compute.worker.*.ip_address)),
-#     formatlist("10 1 443 %s", concat(hcloud_server.worker.*.ipv4_address, exoscale_compute.worker.*.ip_address)),
-#   )}"
-# }
+  records = "${concat(
+    formatlist("10 1 80 %s", concat(hcloud_server.worker.*.ipv4_address, exoscale_compute.worker.*.ip_address)),
+    formatlist("10 1 443 %s", concat(hcloud_server.worker.*.ipv4_address, exoscale_compute.worker.*.ip_address)),
+  )}"
+}

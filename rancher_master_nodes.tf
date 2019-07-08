@@ -27,19 +27,17 @@ resource "aws_route53_record" "master_nodes" {
   type    = "A"
   ttl     = "300"
 
-  records = [
-    "${hcloud_server.master.*.ipv4_address}",
-  ]
+  records = "${hcloud_server.master.*.ipv4_address}"
 }
 
-# resource "aws_route53_record" "master_nodes_srv" {
-#   zone_id = "${var.aws_route53_zone}"
-#   name    = "_http._tcp.${var.prefix}master-nodes.${var.base_domain}"
-#   type    = "SRV"
-#   ttl     = "300"
+resource "aws_route53_record" "master_nodes_srv" {
+  zone_id = "${var.aws_route53_zone}"
+  name    = "_http._tcp.${var.prefix}master-nodes.${var.base_domain}"
+  type    = "SRV"
+  ttl     = "300"
 
-#   records = "${concat(
-#     formatlist("10 1 80 %s", hcloud_server.master.*.ipv4_address),
-#     formatlist("10 1 443 %s", hcloud_server.master.*.ipv4_address)
-#   )}"
-# }
+  records = "${concat(
+    formatlist("10 1 80 %s", hcloud_server.master.*.ipv4_address),
+    formatlist("10 1 443 %s", hcloud_server.master.*.ipv4_address)
+  )}"
+}
