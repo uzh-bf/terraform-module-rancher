@@ -7,7 +7,7 @@ resource "aws_iam_user" "cert_manager" {
 resource "aws_iam_access_key" "cert_manager_credentials" {
   count = "${var.setup_certmgr ? 1 : 0}"
 
-  user = "${aws_iam_user.cert_manager.name}"
+  user = "${element(aws_iam_user.cert_manager.name, count.index)}"
 }
 
 # TODO: scoping to specific hosted zones?
@@ -44,7 +44,7 @@ EOF
 resource "aws_iam_policy_attachment" "cert_manager_policy_attachment" {
   count = "${var.setup_certmgr ? 1 : 0}"
 
-  name       = "cert_manager_policy_attachment"
+  name = "cert_manager_policy_attachment"
   policy_arn = "${aws_iam_policy.cert_manager_policy.arn}"
-  users      = ["${aws_iam_user.cert_manager.name}"]
+  users = ["${element(aws_iam_user.cert_manager.name, count.index)}"]
 }
