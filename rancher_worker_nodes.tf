@@ -57,8 +57,7 @@ resource "aws_route53_record" "worker_nodes" {
   type    = "A"
   ttl     = "300"
 
-  records = "${concat(hcloud_server.worker.*.ipv4_address, exoscale_compute.worker.*.ip_address)}",
-
+  records = "${concat(hcloud_server.worker.*.ipv4_address, exoscale_compute.worker.*.ip_address)}"
 }
 
 resource "aws_route53_record" "worker_nodes_srv" {
