@@ -45,6 +45,6 @@ resource "aws_iam_policy_attachment" "cert_manager_policy_attachment" {
   count = "${var.setup_certmgr ? 1 : 0}"
 
   name = "cert_manager_policy_attachment"
-  policy_arn = "${aws_iam_policy.cert_manager_policy.arn}"
+  policy_arn = "${aws_iam_policy.cert_manager_policy[0].arn}"
   users = ["${aws_iam_user.cert_manager[0].name}"]
 }
