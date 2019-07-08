@@ -12,7 +12,7 @@ resource "exoscale_security_group" "rancher_worker" {
 
 resource "exoscale_security_group_rules" "rancher_master_rules" {
   count             = "${var.setup_exoscale ? 1 : 0}"
-  security_group_id = "${exoscale_security_group.rancher_master.id}"
+  security_group_id = "${exoscale_security_group.rancher_master[0].id}"
 
   ingress {
     description              = "ssh"
@@ -57,7 +57,7 @@ resource "exoscale_security_group_rules" "rancher_master_rules" {
 
 resource "exoscale_security_group_rules" "rancher_worker_rules" {
   count             = "${var.setup_exoscale ? 1 : 0}"
-  security_group_id = "${exoscale_security_group.rancher_worker.id}"
+  security_group_id = "${exoscale_security_group.rancher_worker[0].id}"
 
   ingress {
     description              = "ssh"
