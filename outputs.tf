@@ -11,9 +11,9 @@ output "aws_route53_record_worker_nodes" {
 }
 
 output "cert_manager_access_key" {
-  value = "${aws_iam_access_key.cert_manager_credentials.*.id}"
+  value = "${element(aws_iam_access_key.cert_manager_credentials.*.id, 0)}"
 }
 
 output "cert_manager_secret_key" {
-  value = "${aws_iam_access_key.cert_manager_credentials.*.secret}"
+  value = "${element(aws_iam_access_key.cert_manager_credentials.*.secret, 0)}"
 }
