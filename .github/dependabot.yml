@@ -1,0 +1,10 @@
+version: 2
+updates:
+- package-ecosystem: terraform
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "06:00"
+  open-pull-requests-limit: 99
+  reviewers:
+  - rschlaefli
